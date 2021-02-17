@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>আবহাওয়া</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="searchCity" placeholder="যে শহরের আবহাওয়া জানতে চান(ইংলিশে)">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-danger" id="searchBtn">এখানে গুতা মারুন!</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="name">Dhaka</h1>
+            <h3><span id="temp">38.06</span>&deg;C</h3>
+            <h1 class="lead" id="air">Clouds</h1>
+        </div>
+    </div>
+    <script>
+        const search = document.getElementById('searchBtn');
+        search.addEventListener('click',function(){
+            const city = document.getElementById('searchCity').value;
+            weatherUpdate(city);
+            document.getElementById('searchCity').value= '';
+
+        })
+
+        function weatherUpdate(city){
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=18667b4566d2c98fc982b3449cb180dd`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data.name);
+                document.getElementById('name').innerText = data.name;
+
+                document.getElementById('air').innerText = data.weather[0].main;
+                const tempe = (data.main.temp)-273.15;
+                document.getElementById('temp').innerText = tempe.toFixed(2) ;
+            })
+        }
+    </script>
+
+</body>
+
+</html>
